@@ -1,12 +1,12 @@
-import { Route, Routes, useLocation,useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import StudentDashboard from "./pages/Student/StudentDashboard";
 import Login from "./pages/Login";
 import Attendance from "./pages/Student/Attendance";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./component/PrivateRoute";
-import Navbar from "./component/Navbar";
+import { Navbar } from "./component/Navbar";
 import { useState, useEffect } from "react";
-import { getUser, getPhoto } from "./services/Apis";
+import { useAuth } from "@context/AuthContext";
 // import TeacherDashboard from "./pages/Teacher/TeacherDashboard";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminAttendance from "./pages/Admin/AdminAttendance";
@@ -26,42 +26,17 @@ import AttendanceById from "./pages/Admin/AttendanceById";
 import MarkAssignment from "./pages/Teacher/MarkAssignment";
 import ClassParticipation from "./pages/Admin/ClassParticipation";
 import AdminPrediction from "./pages/Admin/AdminPrediction";
+import HomePage from "./pages/HomePage.tsx";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("access"));
-  const [fullName, setFullName] = useState(localStorage.getItem("fullName") || "");
-  const [photoUrl, setPhotoUrl] = useState("");
-  const [role, setRole] = useState(localStorage.getItem("role") || "");
+  // Auth state is managed by AuthContext — read from it here
+  const { fullName, photoUrl, role } = useAuth();
+
   const [classes, setClasses] = useState([]);
-    const [subjects, setSubjects] = useState([]);
-    const [selectedClass, setSelectedClass] = useState("");
-    
+  const [subjects, setSubjects] = useState([]);
+  const [selectedClass, setSelectedClass] = useState("");
 
   const location = useLocation();
-
-  
-
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const userData = await getUser();
-        const user = Array.isArray(userData) ? userData[0] : userData;
-        setFullName(user?.data?.full_name || "");
-        setRole(user?.data?.role || "");
-        
-        const photoResponse = await getPhoto();
-        if (photoResponse?.profile_picture_url) {
-          setPhotoUrl(photoResponse.profile_picture_url);
-        }
-      } catch (error) {
-        console.error("Failed to fetch user data:", error);
-      }
-    };
-
-    if (isLoggedIn) {
-      fetchUserDetails();
-    }
-  }, [isLoggedIn]);
 
 
   useEffect(() => {
@@ -93,7 +68,7 @@ function App() {
     fetchSubjects();
   }, [selectedClass]);
 
-  const showNavbar = location.pathname !== "/";
+  const showNavbar = location.pathname !== "/" && location.pathname !== "/login";
 
   return (
     <div className="w-screen min-h-screen bg-background">
@@ -101,18 +76,18 @@ function App() {
         <Navbar
           fullName={fullName}
           photoUrl={photoUrl}
-          setIsLoggedIn={setIsLoggedIn}
           role={role}
         />
       )}
       <Routes>
-        <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/" element={<HomePage  />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/student/dashboard" element={<PrivateRoute expectedRole="student" ><StudentDashboard /></PrivateRoute> }/>
         <Route path="/student/attendance"element={<PrivateRoute expectedRole="student" ><Attendance /></PrivateRoute>}/>
         <Route path="/student/assignment"element={<PrivateRoute expectedRole="student" ><StudentAssignment /></PrivateRoute>}/>
         <Route path="/student/assignment/details/:id" element={<PrivateRoute expectedRole="student" ><ViewAssignment/></PrivateRoute>}/>
         <Route path="/student/grades" element={<PrivateRoute expectedRole="student" ><ViewMarksheet/></PrivateRoute>}/>
-        <Route path="/profile"element={<PrivateRoute><Profile setIsLoggedIn={setIsLoggedIn}setFullName={setFullName}setPhotoUrl={setPhotoUrl}/> </PrivateRoute>}/>
+        <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>}/>
         <Route path="/teacher/dashboard" element={<PrivateRoute expectedRole="teacher" ><AdminDashboard role="teacher" /></PrivateRoute>} />
         <Route path="/teacher/attendance" element={<PrivateRoute expectedRole="teacher" ><TeacherAttendance classes={classes}
             selectedClass={selectedClass} setSelectedClass={setSelectedClass} /></PrivateRoute>} />

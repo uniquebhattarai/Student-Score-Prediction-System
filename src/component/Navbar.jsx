@@ -11,11 +11,13 @@ import {
   FiUser,
 } from "react-icons/fi";
 import { Toast } from "../../utils/Toast";
+import { useAuth } from "@context/AuthContext";
 
 // Avatar Menu Component
-function AvatarMenu({ setIsLoggedIn, fullName = "User", photoUrl = null }) {
+function AvatarMenu({ fullName = "User", photoUrl = null }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const fallbackAvatar = `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(
     fullName
@@ -24,13 +26,8 @@ function AvatarMenu({ setIsLoggedIn, fullName = "User", photoUrl = null }) {
   const avatarUrl = photoUrl ? `${photoUrl}?t=${Date.now()}` : fallbackAvatar;
 
   const handleLogout = () => {
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
-    setIsLoggedIn(false);
-    Toast.success("Logged out successfully!", {
-      position: "top-right",
-    });
-    navigate("/");
+    Toast.success("Logged out successfully!", { position: "top-right" });
+    logout(); // context clears localStorage and redirects to /
   };
 
   return (
@@ -76,7 +73,7 @@ function AvatarMenu({ setIsLoggedIn, fullName = "User", photoUrl = null }) {
 }
 
 // Navbar Component
-export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
+export function Navbar({ fullName, photoUrl, role }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -129,7 +126,6 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
             <AvatarMenu
               fullName={fullName}
               photoUrl={photoUrl}
-              setIsLoggedIn={setIsLoggedIn}
             />
           </div>
         </div>
@@ -171,7 +167,7 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
                   <>
                     <Link
                       to="/student/dashboard"
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50"
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50"
                       onClick={toggleMenu}
                     >
                       <FiTrello className="w-5 h-5" />
@@ -179,7 +175,7 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
                     </Link>
                     <Link
                       to="/student/attendance"
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50"
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50"
                       onClick={toggleMenu}
                     >
                       <FiCalendar className="w-5 h-5" />
@@ -187,7 +183,7 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
                     </Link>
                     <Link
                       to="/student/assignment"
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50"
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50"
                       onClick={toggleMenu}
                     >
                       <FiFileText className="w-5 h-5" />
@@ -195,7 +191,7 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
                     </Link>
                     <Link
                       to="/student/grades"
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50"
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50"
                       onClick={toggleMenu}
                     >
                       <FiTrello className="w-5 h-5" />
@@ -209,7 +205,7 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
                   <>
                     <Link
                       to="/teacher/dashboard"
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50"
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50"
                       onClick={toggleMenu}
                     >
                       <FiTrello className="w-5 h-5" />
@@ -217,7 +213,7 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
                     </Link>
                     <Link
                       to="/teacher/attendance"
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50"
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50"
                       onClick={toggleMenu}
                     >
                       <FiCalendar className="w-5 h-5" />
@@ -225,7 +221,7 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
                     </Link>
                     <Link
                       to="/teacher/assignment"
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50"
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50"
                       onClick={toggleMenu}
                     >
                       <FiFileText className="w-5 h-5" />
@@ -233,7 +229,7 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
                     </Link>
                     <Link
                       to="/teacher/marksheet"
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50"
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50"
                       onClick={toggleMenu}
                     >
                       <FiClipboard className="w-5 h-5" />
@@ -241,7 +237,7 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
                     </Link>
                     <Link
                       to="/teacher/classparticipation"
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50"
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50"
                       onClick={toggleMenu}
                     >
                       <FiUser className="w-5 h-5" />
@@ -255,7 +251,7 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
                   <>
                     <Link
                       to="/admin/dashboard"
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50"
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50"
                       onClick={toggleMenu}
                     >
                       <FiTrello className="w-5 h-5" />
@@ -263,7 +259,7 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
                     </Link>
                     <Link
                       to="/admin/attendance"
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50"
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50"
                       onClick={toggleMenu}
                     >
                       <FiCalendar className="w-5 h-5" />
@@ -271,7 +267,7 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
                     </Link>
                     <Link
                       to="/admin/assignment"
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50"
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50"
                       onClick={toggleMenu}
                     >
                       <FiFileText className="w-5 h-5" />
@@ -279,7 +275,7 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
                     </Link>
                     <Link
                       to="/admin/marksheet"
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50"
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50"
                       onClick={toggleMenu}
                     >
                       <FiClipboard className="w-5 h-5" />
@@ -287,7 +283,7 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
                     </Link>
                     <Link
                       to="/admin/manageuser"
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50"
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50"
                       onClick={toggleMenu}
                     >
                       <FiUser className="w-5 h-5" />
@@ -295,7 +291,7 @@ export function Navbar({ setIsLoggedIn, fullName, photoUrl, role }) {
                     </Link>
                     <Link
                       to="/admin/classparticipation"
-                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-blue-50"
+                      className="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-700 hover:bg-green-50"
                       onClick={toggleMenu}
                     >
                       <FiUser className="w-5 h-5" />

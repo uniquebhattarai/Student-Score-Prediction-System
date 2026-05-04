@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "../../utils/Toast";
 import { login, getUser } from "../services/Apis";
+import { useAuth } from "@context/AuthContext";
 
-function Login({ setIsLoggedIn }) {
+function Login() {
+  const { login: authLogin } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
@@ -26,7 +28,7 @@ function Login({ setIsLoggedIn }) {
       const role = userData?.data?.role;
       localStorage.setItem("role", role);
       Toast.success("Logged in successfully!");
-      setIsLoggedIn(true);
+      authLogin();
       if (role === "student") {
         navigate("/student/dashboard");
       } else if (role === "admin") {

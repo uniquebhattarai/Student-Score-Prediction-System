@@ -25,7 +25,7 @@ It provides an intuitive interface for uploading student data, visualizing predi
 | Layer | Technologies Used |
 |--------|-------------------|
 | **Frontend** | React (Vite), Tailwind CSS v4 |
-| **UI/UX** | ShadCN/UI, Lucide React, Framer Motion |
+| **UI/UX** |  React Icons, Framer Motion |
 | **API Handling** | Axios (custom `apiConnector.js`) |
 | **Routing** | React Router DOM |
 | **Backend (for reference)** | Django REST Framework + ML Model |
@@ -33,6 +33,13 @@ It provides an intuitive interface for uploading student data, visualizing predi
 ---
 
 ## Screenshots
+
+### Homepage
+
+**Landing Page**  
+![Homepage](./screenshots/homepage.png)
+
+---
 
 ### Student Role
 

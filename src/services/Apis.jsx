@@ -13,13 +13,15 @@ export const login = async (email, password) => {
 
 
 export const getUser = async () => {
+
+
+  
   const token = localStorage.getItem("access");
 
   if (!token) {
     throw new Error("No access token found in localStorage.");
   }
-
-  const response = await apiConnector("GET", "/user/", null, {
+const response = await apiConnector("GET", "/user/", null, {
     Authorization: `Bearer ${token}`,
   });
 
@@ -28,9 +30,14 @@ export const getUser = async () => {
 
 
 export const uploadPhoto = async (file) => {
+
+  
   const token = localStorage.getItem("access");
 
-  const formData = new FormData();
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+const formData = new FormData();
   formData.append("user_image", file);
 
   const response = await apiConnector("POST", "/upload_photo/", formData, {
@@ -42,9 +49,14 @@ export const uploadPhoto = async (file) => {
 };
 
 export const getPhoto = async () => {
+
+  
   const token = localStorage.getItem("access");
 
-  const response = await apiConnector("GET", "/get_photo/", null, {
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+const response = await apiConnector("GET", "/get_photo/", null, {
     Authorization: `Bearer ${token}`,
   });
 
@@ -61,9 +73,14 @@ export const getPhoto = async () => {
 
 
 export const updateUser = async (userData) => {
+
+  
   const token = localStorage.getItem("access");
 
-  const response = await apiConnector("PUT", "/register/update/", userData, {
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+const response = await apiConnector("PUT", "/register/update/", userData, {
     Authorization: `Bearer ${token}`,
   });
 
@@ -71,9 +88,14 @@ export const updateUser = async (userData) => {
 };
 
 export const deleteUser = async (id) => {
+
+  
   const token = localStorage.getItem("access");
 
-  const response = await apiConnector("DELETE", "/register/delete/", { id }, {
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+const response = await apiConnector("DELETE", "/register/delete/", { id }, {
     Authorization: `Bearer ${token}`,
   });
 
@@ -82,9 +104,14 @@ export const deleteUser = async (id) => {
 
 
 export const attendanceDetail = async()=>{
+  
   const token = localStorage.getItem("access");
-  const response = await apiConnector("GET","/attendance_detail/",null,{
-    Authorization:`Bearer ${token}`,
+
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+const response = await apiConnector("GET", "/attendance_detail/", null, {
+    Authorization: `Bearer ${token}`,
   });
 
   return response.data;
@@ -93,9 +120,14 @@ export const attendanceDetail = async()=>{
 
 
 export const createAssignment = async(assignmentData)=>{
+ 
   const token = localStorage.getItem("access");
- try {
-  const response = await apiConnector("POST","/assignments/create/",assignmentData,{
+
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+try {
+  const response = await apiConnector("POST", "/assignments/create/", assignmentData, {
     Authorization: `Bearer ${token}`,
     "Content-Type":"application/json",
   });
@@ -107,11 +139,16 @@ export const createAssignment = async(assignmentData)=>{
 }
 
 export const ClassList = async()=>{
+  
   const token = localStorage.getItem("access");
-  try {
-    const response = await apiConnector("GET","/class_list/",null,{
-      Authorization:`Bearer ${token}`,
-    });
+
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+try {
+    const response = await apiConnector("GET", "/class_list/", null, {
+    Authorization: `Bearer ${token}`,
+  });
     return response.data;
   } catch (error) {
     console.error("Failed to fetch class List:",error);
@@ -121,11 +158,16 @@ export const ClassList = async()=>{
 }
 
 export const SubjectList = async(ClassList)=>{
+  
   const token = localStorage.getItem("access");
-  try {
-    const response = await apiConnector("GET",`/subject_list/${ClassList}/`,null,{
-      Authorization:`Bearer ${token}`,
-    });
+
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+try {
+    const response = await apiConnector("GET", `/subject_list/${ClassList}/`, null, {
+    Authorization: `Bearer ${token}`,
+  });
     return response.data;
   } catch (error) {
     console.error("Failed to fetch subject List:",error);
@@ -134,11 +176,16 @@ export const SubjectList = async(ClassList)=>{
 }
 
 export const Assignmentlist = async(ClassList,SubjectList)=>{
+  
   const token = localStorage.getItem("access");
-  try {
-    const response = await apiConnector("GET",`/teacher_assignment_list/?classlevel=${ClassList}&subject=${SubjectList}`,null,{
-      Authorization:`Bearer ${token}`,
-    });
+
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+try {
+    const response = await apiConnector("GET", `/teacher_assignment_list/?classlevel=${ClassList}&subject=${SubjectList}`, null, {
+    Authorization: `Bearer ${token}`,
+  });
     return response.data;
   } catch (error) {
     console.error("Failed to fetch assignments:",error);
@@ -147,11 +194,16 @@ export const Assignmentlist = async(ClassList,SubjectList)=>{
 }
 
 export const UpdateAssignment = async(id,data)=>{
+  
   const token = localStorage.getItem("access");
-  try {
-    const response = await apiConnector("PUT",`/assignments/${id}/update/`,data,{
-      Authorization:`Bearer ${token}`,
-    });
+
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+try {
+    const response = await apiConnector("PUT", `/assignments/${id}/update/`, data, {
+    Authorization: `Bearer ${token}`,
+  });
     return response.data;
   } catch (error) {
     console.error("Error while updating assignment",error);
@@ -159,11 +211,16 @@ export const UpdateAssignment = async(id,data)=>{
   }
 }
 export const getAssignment = async(id)=>{
+  
   const token = localStorage.getItem("access");
-  try {
-    const response = await apiConnector("GET",`/get_assignment_by_id/${id}/`,null,{
-      Authorization:`Bearer ${token}`,
-    });
+
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+try {
+    const response = await apiConnector("GET", `/get_assignment_by_id/${id}/`, null, {
+    Authorization: `Bearer ${token}`,
+  });
     return response.data;
   } catch (error) {
     console.error("Error while fetching assignment list",error);
@@ -172,11 +229,16 @@ export const getAssignment = async(id)=>{
 }
 
 export const deleteAssignment = async(id)=>{
+  
   const token = localStorage.getItem("access");
-  try {
-    const response = await apiConnector("DELETE",`/assignments/${id}/delete/`,null,{
-      Authorization:`Bearer ${token}`,
-    });
+
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+try {
+    const response = await apiConnector("DELETE", `/assignments/${id}/delete/`, null, {
+    Authorization: `Bearer ${token}`,
+  });
     return response.data;
   } catch (error) {
     console.error("Error while Deleting assignment",error);
@@ -184,11 +246,16 @@ export const deleteAssignment = async(id)=>{
 }
 
 export const studentAssignment = async()=>{
+  
   const token = localStorage.getItem("access");
-  try {
-    const response = await apiConnector("GET","/assignments/",null,{
-      Authorization:`Bearer ${token}`,
-    });
+
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+try {
+    const response = await apiConnector("GET", "/assignments/", null, {
+    Authorization: `Bearer ${token}`,
+  });
     return response.data;
   } catch (error) {
     console.error("Error while Fetching assignment",error);
@@ -196,11 +263,16 @@ export const studentAssignment = async()=>{
 }
 
 export const getAttendancelist = async(id)=>{
+  
   const token = localStorage.getItem("access");
-  try {
-    const response = await apiConnector("GET",`/get_attendance_detail_by_id/${id}/`,null,{
-      Authorization:`Bearer ${token}`,
-    });
+
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+try {
+    const response = await apiConnector("GET", `/get_attendance_detail_by_id/${id}/`, null, {
+    Authorization: `Bearer ${token}`,
+  });
     return response.data;
   } catch (error) {
     console.error("Error while fetching attendance list",error);
@@ -208,11 +280,16 @@ export const getAttendancelist = async(id)=>{
   }
 }
 export const getStudentByClass = async(id)=>{
+  
   const token = localStorage.getItem("access");
-  try {
-    const response = await apiConnector("GET",`/get_student_by_class/${id}`,null,{
-      Authorization:`Bearer ${token}`,
-    });
+
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+try {
+    const response = await apiConnector("GET", `/get_student_by_class/${id}`, null, {
+    Authorization: `Bearer ${token}`,
+  });
     return response.data;
   } catch (error) {
     console.error("Error while fetching Student list",error);
@@ -221,13 +298,15 @@ export const getStudentByClass = async(id)=>{
 }
 
 export const getPerformance = async (studentId) => {
+
+
+  
   const token = localStorage.getItem("access");
 
   if (!token) {
     throw new Error("No access token found in localStorage.");
   }
-
-  const response = await apiConnector(
+const response = await apiConnector(
     "GET",
     `/performance/${studentId}/`,
     null,
@@ -240,12 +319,19 @@ export const getPerformance = async (studentId) => {
 };
 
 export const attendanceById = async (id) => {
+
+  
   const token = localStorage.getItem("access");
 
-  const response = await apiConnector(
+  if (!token) {
+    throw new Error("No access token found in localStorage.");
+  }
+const response = await apiConnector(
     "GET",`/get_attendance_detail_by_id/${id}/`, 
-    null, 
-    { Authorization: `Bearer ${token}` }
+    null,
+    {
+      Authorization: `Bearer ${token}`,
+    }
   );
 
   return response.data;
