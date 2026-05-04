@@ -37,7 +37,7 @@ It provides an intuitive interface for uploading student data, visualizing predi
 ### Homepage
 
 **Landing Page**  
-![Homepage](./screenshots/homepage.png)
+![Homepage](./screenshots/HomePage.png)
 
 ---
 
